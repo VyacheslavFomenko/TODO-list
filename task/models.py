@@ -8,6 +8,9 @@ class Status(models.Model):
     name = models.CharField(max_length=255, unique=True)
     editable = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class FileImage(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
@@ -24,3 +27,12 @@ class Task(models.Model):
     assigned_to = models.ManyToManyField(User, related_name="task")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return (f"{self.id} "
+                f"{self.title} "
+                f"{self.description} "
+                f"{self.status} "
+                f"{self.assigned_to} "
+                f"{self.created_at} "
+                f"{self.updated_at}")
