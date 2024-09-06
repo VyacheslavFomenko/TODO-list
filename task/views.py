@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -10,9 +7,6 @@ from task.permissions import IsAbleToEdit
 from task.serializers import TaskSerializer, StatusSerializer
 
 from django.contrib.contenttypes.models import ContentType
-
-
-# Create your views here.
 
 
 class TaskViewSet(viewsets.ModelViewSet):
