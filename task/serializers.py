@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from task.models import FileImage, Task, Status
 from django.contrib.contenttypes.models import ContentType
-from tasks import send_email_task
+from task.tasks import send_email_task
 
 from user.serializers import UserDetailSerializer
 
