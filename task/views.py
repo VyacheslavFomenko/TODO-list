@@ -1,25 +1,20 @@
-from django.shortcuts import render
-
-# Create your views here.
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from task.models import FileImage, Task, Status
 from task.permissions import IsAbleToEdit
-from task.serializers import TaskSerializer, StatusSerializer
+from task.serializers import TaskSerializer, StatusSerializer, FileImageSerializer
 
 from django.contrib.contenttypes.models import ContentType
-
-
-# Create your views here.
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
     permission_classes = [IsAuthenticated, IsAbleToEdit]
-    image_serializer_class = FileImage
+    image_serializer_class = FileImageSerializer
 
     @staticmethod
     def _params_to_ints(qs):
@@ -50,11 +45,12 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(methods=["POST"], detail=True)
     def add_image(self, request, pk):
         data = request.data
-        data["content_type"] = ContentType.objects.get_for_model(Task)
+        data["content_type"] = ContentType.objects.get_for_model(Task).pk
         data["object_id"] = pk
-        serializer = self.get_serializer()
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        return serializer.data
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class StatusViewSet(viewsets.ModelViewSet):
