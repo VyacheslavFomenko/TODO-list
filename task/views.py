@@ -30,7 +30,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(title__icontains=title)
         if status:
             status_ids = self._params_to_ints(status)
-            queryset = queryset.filter(ststus__id__in=status_ids)
+            queryset = queryset.filter(status__id__in=status_ids)
         if assigned_to:
             assigned_to_id = self._params_to_ints(assigned_to)
             queryset = queryset.filter(assigned_to__id__in=assigned_to_id)
